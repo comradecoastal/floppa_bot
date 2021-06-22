@@ -1,0 +1,5 @@
+# hidden config file
+config.py
+
+#vim files
+*.swp
