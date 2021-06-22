@@ -28,7 +28,7 @@ class BotServer:
         self.users = dict()
 
 
-    def send_msg(self, peer_id: int, message: str) -> None:
+    def send_msg(self, peer_id: int, message: str, attach: str=None) -> None:
         """
         Send specified message to peer
 
@@ -37,7 +37,10 @@ class BotServer:
         """
 
         # Call the messages.send method from vk api
-        self.vk_api.messages.send(peer_id=peer_id, message=message, random_id=0)
+        if attach is None:
+            self.vk_api.messages.send(peer_id=peer_id, message=message, random_id=0)
+        else:
+            self.vk_api.messages.send(peer_id=peer_id, message=message, random_id=0, attachment=attach)
 
 
     def start(self) -> None:
@@ -60,15 +63,31 @@ class BotServer:
                 if event.object.message["id"] == 0:
 
                     if peer_id not in self.users:
-                        self.users[peer_id] = Commander(self.vk_api)
+                        self.users[peer_id] = Commander(self.vk, peer_id)
 
-                    self.send_msg(peer_id, self.users[peer_id].input(event.object.message))
+                    text, attach = self.users[peer_id].input(event.object.message)
+
+                    self.send_msg(peer_id, text, attach)
 
                 # Private chat response
                 else:
 
                     if peer_id not in self.users:
-                        self.users[peer_id] = Commander(self.vk_api)
+                        self.users[peer_id] = Commander(self.vk, peer_id)
 
-                    self.send_msg(peer_id, self.users[peer_id].input(event.object.message))    
+                    text, attach = self.users[peer_id].input(event.object.message)
 
+                    self.send_msg(peer_id, text, attach)
+
+
+    def get_username(self, user_id: int) -> tuple:
+        """
+        Returns first and second name of user with a given id
+
+        :param int user_id: The id of the user
+        :returns: Tuple with first name and second name
+        :rtype: tuple(str, str)
+        """
+
+        data = self.vk_api.users.get(user_ids=user_id)[0]
+        return data["first_name"], data["last_name"]  
