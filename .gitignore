@@ -1,5 +1,8 @@
 # hidden config file
 config.py
 
+#pycache
+__pycache__/
+
 #vim files
 *.swp
