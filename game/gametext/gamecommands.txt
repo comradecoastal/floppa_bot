@@ -7,12 +7,21 @@ Who wants to be a millionaire
 Is bingus gay?
 }
 /mulchoice {yes, no}
-/choise[yes]{
+/choice[yes]{
 You are correct!
 }
-/choise[no]{
+/choice[no]{
 You are wrong!
-/end[loss]
 }
-
-
+/jumpcond[no]
+/text{
+Dick dicker sucks cocker,
+Cock kicker sucks dicker
+}
+/jumpcond[yes]
+#no
+/text{
+DICKSUCK
+}
+#yes
+/end
