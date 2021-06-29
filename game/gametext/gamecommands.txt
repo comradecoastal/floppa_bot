@@ -1,0 +1,18 @@
+/title {
+Who wants to be a millionaire
+}
+/speaker {Big Floppa}
+/text{Welcome to the game! Answer right and win, answer wrong and lose!}
+/text{The first question is:
+Is bingus gay?
+}
+/mulchoice {yes, no}
+/choise[yes]{
+You are correct!
+}
+/choise[no]{
+You are wrong!
+/end[loss]
+}
+
+
